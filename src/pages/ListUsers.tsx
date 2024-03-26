@@ -1,13 +1,23 @@
+import Navbar from "../components/Navbar";
 import { useUser } from "../hooks/useUser";
 
-const ListUsers = async () => {
-  const user = useUser();
+const ListUsers = () => {
+  // const user = useUser();
 
-  if (user.loading) {
-    return <div>Loading...</div>;
-  }
+  // if (user.loading) {
+  //   return (
+  //     <>
+  //       <div>Loading...</div>
+  //     </>
+  //   );
+  // }
 
-  return <div>ListUsers TABle {user.userData}</div>;
+  return (
+    <>
+    <Navbar/>
+      
+    </>
+  );
 };
 
 export default ListUsers;
