@@ -9,11 +9,13 @@ import { SignInData } from "../interfaces";
 import { Toaster, toast } from "sonner";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 
 export default function Signin() {
-
   const navigate = useNavigate();
+
+  
 
   function incorrectCredentailsError() {
     toast.error("Incorrect Credentials!");
@@ -27,6 +29,15 @@ export default function Signin() {
     resolver: zodResolver(signInSchema),
   });
 
+  useEffect(() => {
+    const token = localStorage.getItem("jwtToken");
+    if (token && token.startsWith("Bearer")) {
+      navigate('/list-user');
+    } else {
+      console.log("Token not found or invalid.");
+    }
+  }, [navigate]);
+
   const onSubmit = async (data: SignInData) => {
     try {
       const response = await fetch("http://localhost:3001/auth/signin", {
@@ -36,7 +47,7 @@ export default function Signin() {
         },
         body: JSON.stringify(data),
       });
-      const responseData = await response.json();
+      const responseData = await response.json(); 
       if (response.status === 200) {
         console.log("Sign-in successful:", responseData);
         const jwtToken = responseData?.token;
