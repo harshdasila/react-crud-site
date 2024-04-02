@@ -5,15 +5,25 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessage from "../components/ErrorMessage";
 import { addUserSchema } from "../schema";
-import { AddUserData } from "../interfaces";
+import { AddUserData, UserStateData } from "../interfaces";
 import { toast } from "sonner";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userState } from "../state/UserDataState";
+import { useUserData } from "../hooks/useUserData";
 
 export const AddUser = () => {
+  useUserData();
+  const userStateData =
+    useRecoilValue<UserStateData>(userState);
+  
   const navigate = useNavigate();
+  if(userStateData?.role_id!==1){
+    navigate('/list-user')
+  }
   const {
     register,
     handleSubmit,
@@ -97,11 +107,11 @@ export const AddUser = () => {
                 id="roleId"
                 className="border border-black text-black bg-white px-3 py-2 rounded-md m-x-2"
               >
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-                <option value={4}>4</option>
-                <option value={5}>5</option>
+                <option value={1}>Super Admin</option>
+                <option value={2}>Admin</option>
+                <option value={3}>Manager</option>
+                <option value={4}>Team Lead</option>
+                <option value={5}>Employee</option>
               </select>
             </div>
 

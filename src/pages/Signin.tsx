@@ -10,12 +10,12 @@ import { Toaster, toast } from "sonner";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-
+import { useRecoilState } from "recoil";
+import { userState } from "../state/UserDataState";
 
 export default function Signin() {
   const navigate = useNavigate();
-
-  
+  const [userStateData, setUserStateData] = useRecoilState(userState);
 
   function incorrectCredentailsError() {
     toast.error("Incorrect Credentials!");
@@ -32,7 +32,7 @@ export default function Signin() {
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     if (token && token.startsWith("Bearer")) {
-      navigate('/list-user');
+      navigate("/list-user");
     } else {
       console.log("Token not found or invalid.");
     }
@@ -47,16 +47,17 @@ export default function Signin() {
         },
         body: JSON.stringify(data),
       });
-      const responseData = await response.json(); 
+      const responseData = await response.json();
       if (response.status === 200) {
         console.log("Sign-in successful:", responseData);
         const jwtToken = responseData?.token;
-        localStorage.setItem("jwtToken",jwtToken);
-        navigate('/list-user')
+        localStorage.setItem("jwtToken", jwtToken);
+        //recoil setting value here
+        setUserStateData(responseData.userData);
+        navigate("/list-user");
       } else {
         console.error("Sign-in failed ", responseData);
         incorrectCredentailsError();
-        
       }
     } catch (error) {
       console.error("Error occurred during sign-in:", error);
@@ -69,7 +70,7 @@ export default function Signin() {
           <div className="text-center mb-3">
             <div className="font-sans text-4xl font-bold">Signin</div>
           </div>
-          <Toaster richColors position="top-right"/>
+          <Toaster richColors position="top-right" />
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <Input
               label="Email"

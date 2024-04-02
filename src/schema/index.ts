@@ -95,4 +95,5 @@ export const signUpSchema = z
       .min(1, "Please enter your Mobile Number.")
       .max(10, "Mobile number must be exactly 10 digits.")
       .regex(/^\d{10}$/, "Mobile number must contain exactly 10 digits."),
+    roleId: z.string()
   })

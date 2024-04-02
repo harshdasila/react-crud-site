@@ -10,15 +10,11 @@ import { Toaster } from "sonner";
 import { AddUser } from "./pages/AddUser";
 import EmailTemplates from "./pages/EmailTemplates";
 import { EditEmailTemplate } from "./pages/EditEmailTemplate";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from "recoil";
+import { RecoilRoot } from "recoil";
+
 
 function App() {
+  
   return (
     <>
       <RecoilRoot>

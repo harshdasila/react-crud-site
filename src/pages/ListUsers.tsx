@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import SearchInput from "../components/searchInput";
-// import { useUser } from "../hooks/useUser";
 import UserList from "../components/UserList";
 import axios from "axios";
 import Loader from "../components/Loader";
@@ -11,8 +10,15 @@ import Pagination from "../components/Pagination";
 import { toast } from "sonner";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { userState } from "../state/UserDataState";
+import { UserStateData } from "../interfaces";
+import { useUserData } from "../hooks/useUserData";
 
 const ListUsers = () => {
+  useUserData();
+  const [userStateData, setUserStateData] =
+    useRecoilState<UserStateData>(userState);
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState("user_created_at");
@@ -128,11 +134,18 @@ const ListUsers = () => {
             setInput={setInput}
             recordsPerPage={recordsPerPage}
             page={page}
-            setPage={setPage} 
+            setPage={setPage}
             setTotalUsers={setTotalUser}
           />
-          
-            <Link className="text-white w-[100px] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 float-end" to={"/add-user"}>Add User</Link>
+
+          {userStateData?.role_id === 1 && (
+            <Link
+              className="text-white w-[100px] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 float-end"
+              to={"/add-user"}
+            >
+              Add User
+            </Link>
+          )}
           <br></br>
           <br></br>
           <table className="table-fixed w-auto p-5 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -273,7 +286,13 @@ const ListUsers = () => {
           </div>
 
           <div className="text-xl p-2">Total Users: {totalUsers}</div>
-          <Pagination pageProp={page} goAhead={goAhead} goBack={goBehind} page={page} totalPages={totalPages}/>
+          <Pagination
+            pageProp={page}
+            goAhead={goAhead}
+            goBack={goBehind}
+            page={page}
+            totalPages={totalPages}
+          />
         </div>
       </div>
     </>

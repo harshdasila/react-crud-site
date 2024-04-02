@@ -106,7 +106,8 @@ export interface EditedUserData {
 export interface EditFormData {
   name: string,
   email: string,
-  number: string
+  number: string,
+  roleId: number
 }
 
 export interface AllEmailTemplateData {
@@ -121,4 +122,15 @@ export interface EmailTemplateData {
   et_title: string,
   et_content: string,
   et_subject: string,
+}
+
+export interface UserStateData {
+  id?: number,
+  role_id?: number
+}
+
+export interface UserStateDataTwo{
+  user_email: string,
+  user_id: number,
+  user_role_id: number
 }
