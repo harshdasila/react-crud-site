@@ -57,14 +57,13 @@ const ListUsers = () => {
       throw new Error("cant get auth token");
     }
   }
+  
 
   async function handleDelete(userId: number) {
     try {
-      const response = await axios.post(
-        "http://localhost:3001/user/list",
-        {
-          userId: userId,
-        },
+      const response = await axios.delete(
+        `http://localhost:3001/user/list/:${userId}`,
+        
         {
           headers: {
             Authorization: `${localStorage.getItem("jwtToken")}`,
@@ -250,9 +249,9 @@ const ListUsers = () => {
                 <th scope="col" className="px-6 py-3 text-base">
                   More Details
                 </th>
-                <th scope="col" className="px-6 py-3 text-base">
+                {userStateData?.role_id === 1 &&<th scope="col" className="px-6 py-3 text-base">
                   Options
-                </th>
+                </th>}
               </tr>
             </thead>
             <tbody>

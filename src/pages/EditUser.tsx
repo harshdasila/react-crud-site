@@ -6,12 +6,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { editUserSchema } from "../schema";
 import Loader from "../components/Loader";
 import ErrorMessage from "../components/ErrorMessage";
-import { EditFormData } from "../interfaces";
+import { EditFormData, UserStateData } from "../interfaces";
 import { toast } from "sonner";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../components/Navbar";
+import { useUserData } from "../hooks/useUserData";
+import { useRecoilValue } from "recoil";
+import { userState } from "../state/UserDataState";
+
 
 export const EditUser = () => {
+  
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -62,12 +67,12 @@ export const EditUser = () => {
   const onSubmit = async (data: EditFormData) => {
     try {
       console.log(data, "daaaaaaaaaaaaaaa");
-      await axios.put(`http://localhost:3001/user/update/${id}`, data, {
+      const res = await axios.put(`http://localhost:3001/user/update/${id}`, data, {
         headers: {
           Authorization: localStorage.getItem("jwtToken"),
         },
       });
-      console.log("User edited successfully");
+      console.log("User edited successfully", res);
       userEditedMessage();
       navigate("/list-user");
     } catch (error) {
@@ -79,7 +84,6 @@ export const EditUser = () => {
   if (loading) {
     return <Loader />;
   }
-  console.log(userData);
   return (
     <>
       <Navbar />
@@ -130,7 +134,7 @@ export const EditUser = () => {
                   </div>
                 </div>
                 <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <label>Role</label>
+                  <label  htmlFor="roleId" > Role</label>
                   <select
                     className="p-2 bg-white border border-black rounded-lg"
                     {...register("roleId")}

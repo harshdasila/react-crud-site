@@ -21,9 +21,9 @@ export const AddUser = () => {
     useRecoilValue<UserStateData>(userState);
   
   const navigate = useNavigate();
-  if(userStateData?.role_id!==1){
-    navigate('/list-user')
-  }
+  // if(userStateData?.role_id!=1){
+  //   navigate('/list-user')
+  // }
   const {
     register,
     handleSubmit,

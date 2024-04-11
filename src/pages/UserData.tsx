@@ -18,22 +18,20 @@ const UserData = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    
-      axios
-        .get(`http://localhost:3001/user/user-details/${id}`, {
-          headers: {
-            Authorization: localStorage.getItem("jwtToken"),
-          },
-        })
-        .then((response) => {
-          setLoading(false);
-          setUserDetails(response.data?.data || {});
-        })
-        .catch((e)=>{
-          console.log(e);
-          navigate('/signin')
-        })
-    
+    axios
+      .get(`http://localhost:3001/user/user-details/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("jwtToken"),
+        },
+      })
+      .then((response) => {
+        setLoading(false);
+        setUserDetails(response.data?.data || {});
+      })
+      .catch((e) => {
+        console.log(e);
+        navigate("/signin");
+      });
   }, [id]);
 
   if (loading) {
@@ -47,7 +45,7 @@ const UserData = () => {
 
   return (
     <>
-    <Navbar/>
+      <Navbar />
 
       <div className="flex justify-center items-center h-screen">
         <div className="bg-white overflow-hidden shadow rounded-lg border w-[600px]">

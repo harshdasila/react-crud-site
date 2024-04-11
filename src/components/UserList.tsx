@@ -1,11 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { UserListProps } from "../interfaces";
+import { UserListProps, UserStateData } from "../interfaces";
+import { useUserData } from "../hooks/useUserData";
+import { useRecoilValue } from "recoil";
+import { userState } from "../state/UserDataState";
+import { useNavigate } from "react-router-dom";
 
 
 const UserList: React.FC<UserListProps> = ({ user, handleDelete }) => {
+  useUserData();
   const {user_id, user_name, user_email, user_number, user_created_at } = user;
-
+  const userStateData =
+  useRecoilValue<UserStateData>(userState);
+  const navigate = useNavigate();
+  // if(userStateData?.role_id !== 1 ){
+  //   navigate('/list-user')
+  // }
   return (
     <tr className="odd:bg-white odd:bg-opacity-50 even:bg-gray-100 border-b border-gray-200 dark:border-gray-700 text-black">
       <th
@@ -26,7 +36,7 @@ const UserList: React.FC<UserListProps> = ({ user, handleDelete }) => {
         </Link>
       </td>
       <td>
-        <div className="flex justify-center items-center">
+        {userStateData?.role_id === 1 && <div className="flex justify-center items-center">
           <button
             onClick={() => handleDelete(user_id)}
             className="font-medium text-blue-600 hover:underline dark:text-blue-500 mr-2"
@@ -38,7 +48,7 @@ const UserList: React.FC<UserListProps> = ({ user, handleDelete }) => {
               Edit
             </button>
           </Link>
-        </div>
+        </div>}
       </td>
     </tr>
   );
